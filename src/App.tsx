@@ -1,7 +1,12 @@
+import React, { useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+
+import "./index.css";
+import { Routes } from "./routes/routes";
+import { useGetUserQuery } from "./apis/users.api";
+import { useAppDispatch } from "./app/hooks";
+import { useNavigate } from "react-router";
+import { setAuthState } from "./slices/auth.slice";
 
 const darkTheme = createTheme({
   palette: {
@@ -10,13 +15,22 @@ const darkTheme = createTheme({
 });
 
 function App() {
+  const { data: user } = useGetUserQuery(undefined);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      dispatch(setAuthState({ user }));
+      navigate("/");
+    }
+  }, [user, dispatch, navigate]);
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<SignUp />} />
-      </Routes>
+      <Routes />
     </ThemeProvider>
   );
 }
+
 export default App;

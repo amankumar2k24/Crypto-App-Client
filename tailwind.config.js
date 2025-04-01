@@ -1,8 +1,13 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  darkMode: "class",
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+module.exports = {
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  darkMode: "class", // or 'media' or 'class'
   theme: {
+    extend: {},
+    fontFamily: {
+      sans: ["Roboto"],
+    },
+  },
+  variants: {
     extend: {},
   },
   plugins: [],
